@@ -1,4 +1,4 @@
-# Tarea (Task) 1. Taller R de Estadistica y Programacion.
+# Tarea (Task) 3. Taller R de Estadistica y Programacion.
 # Taller elaborado por:
 # Pablo Andres Ojeda Gomez, con codigo 202012899;
 # Diana Lucia Sanchez Ruiz, con codigo 202013592;
