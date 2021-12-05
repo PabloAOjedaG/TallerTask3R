@@ -39,8 +39,11 @@ ols %>% summary()
 
 olsest = list("OLS" = ols)
 
-modelplot(olsest) + coord_flip() + 
+graph_ols = modelplot(olsest) + coord_flip() + 
   labs(title = "Probabilidad de fallecer")
+
+ggsave(plot=graph_ols, file = "views/graph_ols.jpeg")
+
 
 #2.3
 #realizamos la regresion con la misma ecuacion pero ahora con modelos Logit y Probit
