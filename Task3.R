@@ -20,9 +20,35 @@ p_load(rio,tidyverse,readxl,data.table,plyr,XML,rvest,xml2)
 #--------------------------
 #-------- PUNTO 2 ---------
 #--------------------------
+map_muse <- readRDS(file="f_mapmuse.rds")
 
+#creamos la variable dummy para hacer la regresion 
+map_muse$genero2 <- ifelse(map_muse$genero == "Masculino", 1, 0)
+map_muse$condicion2 <- ifelse(map_muse$condicion == "Fuerza pública", 1, 0)
+map_muse$accidente_Mu <- ifelse(map_muse$tipo_accidente == "Accidente por MUSE", 1, 0)
 
+#realizamos la regresion.
+ols = lm(formula= fallecido ~ accidente_Mu + condicion2 + genero2 + dist_hospi + dist_cpoblado + dist_vias + as.factor(month), data=map_muse)
+ols %>% summary()
 
+#graficamos los resultados 
+coef-plot(ols)
+
+#realizamos la regresion con la misma ecuacion pero ahora con modelos Logit y Probit
+logit = glm(formula= fallecido ~ accidente_Mu + condicion2 + genero2 + dist_hospi + dist_cpoblado + dist_vias + as.factor(month), data=map_muse)
+logit %>% summary()
+
+Probit = glm(formula= fallecido ~ accidente_Mu + condicion2 + genero2 + dist_hospi + dist_cpoblado + dist_vias + as.factor(month), data=map_muse)
+Probit %>% summary()
+
+#calculamos los efectos marginales de las regresiones Lgit y Probit
+logit_marg = margins(logit)
+Probit_marg = margins(Probit)
+ 
+# graficamos y exportamos los efectos marginales
+coef-plot(logit_marg)
+
+coef-plot(Probit_marg)
 
 #--------------------------
 #-------- PUNTO 3 ---------
