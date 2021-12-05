@@ -8,7 +8,7 @@
 # Configuraciones iniciales
 rm(list = ls())
 if(!require(pacman)) install.packages("pacman") ; require(pacman)
-p_load(rio,tidyverse,readxl,data.table,plyr,XML,rvest,xml2)
+p_load(rio,tidyverse,readxl,data.table,plyr,XML,rvest,xml2, broom, mfx, margins,  modelsummary,stargazer)
 
 #--------------------------
 #-------- PUNTO 1 ---------
@@ -20,7 +20,10 @@ p_load(rio,tidyverse,readxl,data.table,plyr,XML,rvest,xml2)
 #--------------------------
 #-------- PUNTO 2 ---------
 #--------------------------
-map_muse <- readRDS(file="f_mapmuse.rds")
+
+#2.1
+#Importamos la base de datos
+map_muse <- readRDS(file="data/output/f_mapmuse.rds")
 
 #creamos la variable dummy para hacer la regresion 
 map_muse$genero2 <- ifelse(map_muse$genero == "Masculino", 1, 0)
@@ -31,9 +34,15 @@ map_muse$accidente_Mu <- ifelse(map_muse$tipo_accidente == "Accidente por MUSE",
 ols = lm(formula= fallecido ~ accidente_Mu + condicion2 + genero2 + dist_hospi + dist_cpoblado + dist_vias + as.factor(month), data=map_muse)
 ols %>% summary()
 
-#graficamos los resultados 
-coef-plot(ols)
+#2.2
+#graficamos los resultados coefplot 
 
+olsest = list("OLS" = ols)
+
+modelplot(olsest) + coord_flip() + 
+  labs(title = "Probabilidad de fallecer")
+
+#2.3
 #realizamos la regresion con la misma ecuacion pero ahora con modelos Logit y Probit
 logit = glm(formula= fallecido ~ accidente_Mu + condicion2 + genero2 + dist_hospi + dist_cpoblado + dist_vias + as.factor(month), data=map_muse)
 logit %>% summary()
@@ -41,6 +50,9 @@ logit %>% summary()
 Probit = glm(formula= fallecido ~ accidente_Mu + condicion2 + genero2 + dist_hospi + dist_cpoblado + dist_vias + as.factor(month), data=map_muse)
 Probit %>% summary()
 
+#2.4
+
+#2.5
 #calculamos los efectos marginales de las regresiones Lgit y Probit
 logit_marg = margins(logit)
 Probit_marg = margins(Probit)
