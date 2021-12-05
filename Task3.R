@@ -53,13 +53,22 @@ logit %>% summary()
 Probit = glm(formula= fallecido ~ accidente_Mu + condicion2 + genero2 + dist_hospi + dist_cpoblado + dist_vias + as.factor(month), data=map_muse)
 Probit %>% summary()
 
-#2.4
-
-#2.5
 #calculamos los efectos marginales de las regresiones Lgit y Probit
 logit_marg = margins(logit)
 Probit_marg = margins(Probit)
- 
+
+#2.4
+
+#Hacemos la tabla con los resultados de los 3 modelos
+stargazer(ols, logit_marg, Probit_marg,
+          type= 'text',
+          dep.var.labels = c('','Probabilidad de fallecer',''), 
+          df = FALSE,
+          digits = 3, 
+          out = paste0('data/output/ols.text'))
+
+#2.5
+
 # graficamos y exportamos los efectos marginales
 coef-plot(logit_marg)
 
