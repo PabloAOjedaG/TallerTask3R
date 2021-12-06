@@ -76,7 +76,7 @@ logit %>% summary()
 Probit = glm(formula= fallecido ~ accidente_Mu + condicion2 + genero2 + dist_hospi + dist_cpoblado + dist_vias + as.factor(month), data=map_muse)
 Probit %>% summary()
 
-#calculamos los efectos marginales de las regresiones Lgit y Probit
+#calculamos los efectos marginales de las regresiones Logit y Probit
 logit_marg = margins(logit)
 Probit_marg = margins(Probit)
 
@@ -92,7 +92,7 @@ stargazer(ols, logit_marg, Probit_marg,
 
 #2.5
 
-# graficamos y exportamos los efectos marginales
+# Graficamos y exportamos los efectos marginales
 
 #Vamos a hacer dos tipos de gráficos
 
@@ -103,8 +103,17 @@ graph_problog = modelplot(coeflist) + coord_flip() +
 
 ggsave(plot=graph_problog, file = "views/graph_problog.jpeg")
 
+#Ahora, graficamos el efecto en el modelo logit de la distancia al hospital
+graph_log = modelplot(logit_marg, coef_map = "dist_hospi") + 
+  labs(title = "Probabilidad de fallecer debido a la distancia a un centro medico")
+ggsave(plot=graph_log, file = "views/graph_log.jpeg")
 
-#Segundo, los coefplot para cada modelo
+#Ahora, graficamos el efecto en el modelo probit de la distancia al hospital
+graph_prob = modelplot(Probit_marg, coef_map = "dist_hospi") + 
+  labs(title = "Probabilidad de fallecer debido a la distancia a un centro medico")
+ggsave(plot=graph_prob, file = "views/graph_prob.jpeg")
+
+#Como adicional, hacemos los coefplot para cada modelo
 coef-plot(logit_marg)
 
 coef-plot(Probit_marg)
