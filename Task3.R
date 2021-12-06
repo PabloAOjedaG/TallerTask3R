@@ -8,7 +8,7 @@
 # Configuraciones iniciales
 rm(list = ls())
 if(!require(pacman)) install.packages("pacman") ; require(pacman)
-p_load(rio,tidyverse,readxl,data.table,plyr,XML,rvest,xml2, broom, mfx, margins,  modelsummary,stargazer)
+p_load(rio,tidyverse,readxl,data.table,plyr,XML,rvest,xml2, broom, mfx, margins,  modelsummary,stargazer, outreg)
 
 #--------------------------
 #-------- PUNTO 1 ---------
@@ -70,6 +70,18 @@ stargazer(ols, logit_marg, Probit_marg,
 #2.5
 
 # graficamos y exportamos los efectos marginales
+
+#Vamos a hacer dos tipos de gráficos
+
+#Primero, el grafico con todos los efectos marginales para los dos modelos
+coeflist= list("Logit" = logit_marg, "Probit"=Probit_marg)
+graph_problog = modelplot(coeflist) + coord_flip() + 
+  labs(title = "Probabilidad de fallecer")
+
+ggsave(plot=graph_problog, file = "views/graph_problog.jpeg")
+
+
+#Segundo, los coefplot para cada modelo
 coef-plot(logit_marg)
 
 coef-plot(Probit_marg)
