@@ -14,7 +14,30 @@ p_load(rio,tidyverse,readxl,data.table,plyr,XML,rvest,xml2, broom, mfx, margins,
 #-------- PUNTO 1 ---------
 #--------------------------
 
+#1.1
+via <- read.shapefile("data/input/VIAS")
+puntos <- read.shapefile("data/input/MGN_URB_TOPONIMIA")
 
+c_medico <- subset(puntos, puntos$dbf$dbf$CSIMBOL=="021001", select_all())
+c_medico <- subset(puntos, puntos$dbf$dbf$CSIMBOL=="021002", select_all())
+c_medico <- subset(puntos, puntos$dbf$dbf$CSIMBOL=="021003", select_all())
+
+c_poblado <- readRDS(file = "data/input/c poblado (2017).rds")
+as.numeric(c_poblado$cod_dane)
+c_poblado <- subset(c_poblado, cod_dane>=54001 & cod_dane<55000)
+
+depto <- readRDS(file = "data/input/dp deptos (2017).rds")
+depto <- subset(depto, name_dpto="NORTE DE SANTANDER")
+
+mapmuse <- readRDS(file = "data/input/victimas_map-muse.rds")
+
+#1.2
+skim(c_medico)
+skim(c_poblado)
+skim(depto)
+skim(mapmuse)
+skim(puntos)
+skim(via)
 
 
 #--------------------------
